@@ -1,5 +1,6 @@
 package com.example.catganisation.networking
 
+import com.example.catganisation.model.Breed
 import com.example.catganisation.model.CatModel
 import com.example.catganisation.model.SignInBody
 import com.example.catganisation.model.User
@@ -14,6 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
 var BASE_URL: String = "https://api.thecatapi.com/v1/"
+var API_KEY : String ="c8016ad7-8edc-4dcf-98c9-93023f90f6d9"
 
 private val retrofitFakeLogin = Retrofit.Builder()
     .client(OkHttpClient.Builder().addInterceptor(MockInterceptor()).build())
@@ -37,13 +39,17 @@ interface ApiService {
     @POST("users")
     fun registerUser(
         @Body info: User
-    ): retrofit2.Call<ResponseBody>
+    ): Call<ResponseBody>
 
     @GET("images/search")
-    suspend fun getCatAsync(): List<CatModel>
+    suspend fun getCatAsync(@Query("breed_id") type: String): List<CatModel>
+
+    @Headers("x-api-key:c8016ad7-8edc-4dcf-98c9-93023f90f6d9")
+    @GET("breeds")
+    suspend fun getCatBreeds(): List<Breed>
 }
 
 object CatsApi {
     val retrofitServiceLogin: ApiService by lazy { retrofitFakeLogin.create(ApiService::class.java) }
-    val retrofitService: ApiService by lazy { retrofit.create(ApiService::class.java)}
+    val retrofitService: ApiService by lazy { retrofit.create(ApiService::class.java) }
 }

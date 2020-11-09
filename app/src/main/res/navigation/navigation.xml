@@ -17,5 +17,18 @@
     <fragment
         android:id="@+id/catsListFragment"
         android:name="com.example.catganisation.catsList.CatsListFragment"
-        android:label="CatsListFragment" />
+        android:label="CatsListFragment" >
+        <action
+            android:id="@+id/action_catsListFragment_to_catDetailFragment"
+            app:destination="@id/catDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/catDetailFragment"
+        android:name="com.example.catganisation.catDetail.CatDetailFragment"
+        android:label="fragment_cat_detail"
+        tools:layout="@layout/fragment_cat_detail" >
+        <argument
+            android:name="breedSelected"
+            app:argType="com.example.catganisation.model.Breed" />
+    </fragment>
 </navigation>

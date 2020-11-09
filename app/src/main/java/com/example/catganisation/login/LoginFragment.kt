@@ -53,7 +53,6 @@ class LoginFragment : Fragment() {
         }
 
         modelView.loginResponse.observe(viewLifecycleOwner, {
-            Toast.makeText(activity, "LoginOk", Toast.LENGTH_LONG).show()
             view?.findNavController()
                 ?.navigate(LoginFragmentDirections.actionLoginFragmentToCatsListFragment())
         })

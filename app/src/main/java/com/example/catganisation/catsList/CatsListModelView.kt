@@ -2,29 +2,35 @@ package com.example.catganisation.catsList
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.catganisation.model.Breed
 import com.example.catganisation.model.CatModel
 import com.example.catganisation.repository.CatRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class CatsListModelView (application: Application) : AndroidViewModel(application){
+class CatsListModelView(application: Application) : AndroidViewModel(application) {
 
     private val repository: CatRepository = CatRepository()
 
-    private val _catModel = MutableLiveData<List<CatModel>>()
+    private val _catBreedsModel = MutableLiveData<List<Breed>>()
 
-    val catModel: LiveData<List<CatModel>>
-        get() = _catModel
+    val catBreeds: LiveData<List<Breed>>
+        get() = _catBreedsModel
 
     init {
-        getCat()
+        getBreeds()
     }
 
-
-    private fun getCat() = viewModelScope.launch(Dispatchers.IO)  {
-            _catModel.postValue(repository.getCat())
+    private fun getBreeds() = viewModelScope.launch(Dispatchers.IO) {
+        val breedList = repository.getBreeds()
+        for (i in breedList.indices) {
+            val breedId = breedList[i].id
+            viewModelScope.launch(Dispatchers.IO) {
+                val cat = repository.getCat(breedId.toString())[0]
+                breedList[i].urlImage = cat.url
+            }
+        }
+        _catBreedsModel.postValue(breedList)
     }
 
 }
