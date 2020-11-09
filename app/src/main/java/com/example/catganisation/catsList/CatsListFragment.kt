@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.catganisation.R
@@ -14,7 +15,11 @@ import com.example.catganisation.databinding.FragmentCatsListBinding
 
 class CatsListFragment : Fragment() {
 
-    private lateinit var modelView: CatsListModelView
+    private val FILTER_ALL = "All"
+
+    private val modelView: CatsListModelView by lazy {
+        ViewModelProvider(this).get(CatsListModelView::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setHasOptionsMenu(true)
@@ -24,16 +29,18 @@ class CatsListFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu, menu)
         val countries = resources.getStringArray(R.array.countries)
-        for (i in countries.indices){
+        for (i in countries.indices) {
             menu.add(countries[i].toString())
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        Toast.makeText(activity, item.title, Toast.LENGTH_SHORT).show()
-
+        if (item.title.contains(FILTER_ALL)) {
+            modelView.getBreedNoFilter()
+        } else {
+            modelView.getBreedFilter(item.title.toString())
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -45,13 +52,15 @@ class CatsListFragment : Fragment() {
             inflater, R.layout.fragment_cats_list, container, false
         )
 
-        modelView = ViewModelProvider(this).get(CatsListModelView::class.java)
         binding.viewModel = modelView
         binding.lifecycleOwner = this
 
         val adapter = CatsListAdapter(ListItemListener { breed ->
             view?.findNavController()
-                ?.navigate(CatsListFragmentDirections.actionCatsListFragmentToCatDetailFragment(breed))
+                ?.navigate(
+                    CatsListFragmentDirections.actionCatsListFragmentToCatDetailFragment(breed)
+                )
+            modelView.clean()
         })
 
         binding.recyclerviewlist.layoutManager =
@@ -62,6 +71,11 @@ class CatsListFragment : Fragment() {
             it?.let { adapter.submitList(it) }
         })
 
+        modelView.catBreedsFiltered.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
         return binding.root
     }
 }
