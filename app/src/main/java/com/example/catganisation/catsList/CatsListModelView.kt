@@ -6,6 +6,7 @@ import com.example.catganisation.model.Breed
 import com.example.catganisation.repository.CatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.InputStreamReader
 
 class CatsListModelView(application: Application) : AndroidViewModel(application) {
 
@@ -25,7 +26,7 @@ class CatsListModelView(application: Application) : AndroidViewModel(application
         getBreeds()
     }
 
-    private fun getBreeds() = viewModelScope.launch(Dispatchers.IO) {
+    fun getBreeds() = viewModelScope.launch(Dispatchers.IO) {
         val breedList = repository.getBreeds()
         for (i in breedList.indices) {
             val breedId = breedList[i].id
@@ -53,7 +54,7 @@ class CatsListModelView(application: Application) : AndroidViewModel(application
         _catBreedsFiltered.value = listFilter
     }
 
-    fun clean(){
+    fun clean() {
         _catBreedsFiltered.value = null
     }
 

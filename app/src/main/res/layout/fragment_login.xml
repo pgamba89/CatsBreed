@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -15,6 +16,12 @@
         tools:context=".login.LoginFragment">
 
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/thecatapi" />
+
         <EditText
             android:id="@+id/editTextUser"
             android:layout_width="match_parent"
@@ -28,14 +35,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:password="true"
             android:inputType="textPersonName"
             android:hint="@string/password"/>
 
         <Button
             android:id="@+id/Login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/login"
-            />
+            android:layout_height="68dp"
+            android:text="@string/login" />
     </LinearLayout>
 </layout>
