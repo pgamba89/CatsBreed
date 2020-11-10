@@ -68,12 +68,16 @@ class CatsListFragment : Fragment() {
         binding.recyclerviewlist.adapter = adapter
 
         modelView.catBreeds.observe(viewLifecycleOwner, Observer {
-            it?.let { adapter.submitList(it) }
+            it?.let {
+                adapter.submitList(it)
+                adapter.notifyDataSetChanged()
+            }
         })
 
         modelView.catBreedsFiltered.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+                adapter.notifyDataSetChanged()
             }
         })
         return binding.root
