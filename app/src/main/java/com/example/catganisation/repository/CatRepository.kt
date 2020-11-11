@@ -5,8 +5,10 @@ import com.example.catganisation.model.CatModel
 import com.example.catganisation.model.SignInBody
 import com.example.catganisation.model.User
 import com.example.catganisation.networking.CatsApi
+import com.example.catganisation.utils.OpenForTesting
 
-class CatRepository {
+@OpenForTesting
+ class CatRepository {
 
     suspend fun signIn(signInBody: SignInBody): User {
         return CatsApi.retrofitServiceLogin.signInAsync(signInBody)

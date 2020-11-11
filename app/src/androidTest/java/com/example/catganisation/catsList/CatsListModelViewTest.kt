@@ -2,12 +2,13 @@ package com.example.catganisation.catsList
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import androidx.lifecycle.viewModelScope
 import androidx.test.core.app.ApplicationProvider
 import com.example.catganisation.model.Breed
 import com.example.catganisation.repository.CatRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -15,11 +16,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.*
-
 import java.io.InputStreamReader
 
 
 @RunWith(JUnit4::class)
+@ExperimentalCoroutinesApi
 class CatsListModelViewTest {
 
     @Rule
@@ -36,12 +37,12 @@ class CatsListModelViewTest {
 
     @Before
     fun setup() {
-       MockitoAnnotations.initMocks(this)
+        MockitoAnnotations.initMocks(this)
         modelView = CatsListModelView(ApplicationProvider.getApplicationContext())
     }
 
     @Test
-    fun tst() = runBlocking {
+    fun getAllBreed_return_SuccessfulResponse() = runBlocking {
         modelView.catBreeds.observeForever(breedObserver)
 
         // given
@@ -51,10 +52,12 @@ class CatsListModelViewTest {
 
         Mockito.`when`(repository.getBreeds()).thenReturn(list)
         //when
-        modelView.getBreeds()
+        launch(Dispatchers.Main) {
+            modelView.getBreeds()
+        }
 
         //then
-        Assert.assertEquals(modelView.catBreeds.value, list)
+        Assert.assertEquals(list, modelView.catBreeds.value)
     }
 }
 
