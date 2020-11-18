@@ -1,16 +1,16 @@
 package com.example.catganisation.catsList
 
-import android.app.Application
-import androidx.lifecycle.*
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.catganisation.model.Breed
 import com.example.catganisation.repository.CatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.InputStreamReader
 
-class CatsListModelView(application: Application) : AndroidViewModel(application) {
-
-    private val repository: CatRepository = CatRepository()
+class CatsListModelView @ViewModelInject constructor(private val repository: CatRepository) : ViewModel() {
 
     private val _catBreedsModel = MutableLiveData<List<Breed>>()
 

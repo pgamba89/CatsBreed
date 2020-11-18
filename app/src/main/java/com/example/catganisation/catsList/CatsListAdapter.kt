@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.catganisation.databinding.BreedsCatItemBinding
 import com.example.catganisation.model.Breed
 
-class CatsListAdapter(val clickListener: ListItemListener) :
+class CatsListAdapter(private val clickListener: ListItemListener) :
     ListAdapter<Breed, CatsListAdapter.ViewHolder>(TaskItemsDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

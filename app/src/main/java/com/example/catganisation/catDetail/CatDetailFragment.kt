@@ -6,13 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.catganisation.R
 import com.example.catganisation.databinding.FragmentCatDetailBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class CatDetailFragment : Fragment() {
-    private lateinit var modelView: CatDetailModelView
+
+    private val modelView: CatDetailModelView by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,11 +26,6 @@ class CatDetailFragment : Fragment() {
             inflater, R.layout.fragment_cat_detail, container, false
         )
 
-        val application = requireNotNull(activity).application
-        val breedSelected = CatDetailFragmentArgs.fromBundle(requireArguments()).breedSelected
-        val viewModelFactory = CatDetailModelViewFactory(breedSelected, application)
-
-        modelView = ViewModelProvider(this, viewModelFactory).get(CatDetailModelView::class.java)
         binding.modelView = modelView
         binding.lifecycleOwner = this
 

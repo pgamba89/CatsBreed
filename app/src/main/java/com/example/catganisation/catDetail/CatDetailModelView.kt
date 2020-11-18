@@ -1,12 +1,16 @@
 package com.example.catganisation.catDetail
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import com.example.catganisation.model.Breed
 
-class CatDetailModelView(breed: Breed, application: Application) : AndroidViewModel(application) {
+class CatDetailModelView @ViewModelInject constructor(
+    @Assisted private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     private val _breedSelected = MutableLiveData<Breed>()
 
@@ -14,6 +18,7 @@ class CatDetailModelView(breed: Breed, application: Application) : AndroidViewMo
         get() = _breedSelected
 
     init {
+        val breed = savedStateHandle.get<Breed>("breedSelected")!!
         _breedSelected.value = breed
     }
 }

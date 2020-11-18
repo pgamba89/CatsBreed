@@ -1,6 +1,7 @@
 package com.example.catganisation.model
 
 import android.os.Parcelable
+import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -42,5 +43,6 @@ data class Breed(
     val wikipedia_url: String? = null,
 
     ) : Parcelable {
+    @IgnoredOnParcel
     var urlImage: String? = null
 }

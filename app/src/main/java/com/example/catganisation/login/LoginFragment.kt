@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -16,14 +17,15 @@ import androidx.navigation.findNavController
 import com.example.catganisation.R
 import com.example.catganisation.databinding.FragmentLoginBinding
 import com.example.catganisation.model.SignInBody
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
-    private lateinit var modelView: LoginModelView
+    private val modelView: LoginModelView  by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +35,6 @@ class LoginFragment : Fragment() {
             inflater, R.layout.fragment_login, container, false
         )
 
-        modelView = ViewModelProvider(this).get(LoginModelView::class.java)
         binding.viewModel = modelView
         binding.lifecycleOwner
 
